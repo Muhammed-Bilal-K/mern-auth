@@ -1,5 +1,6 @@
 let user = require("../models/UserModel");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const getAlldetails = async (req, res, next) => {
   const allUser = await user.find({});
@@ -31,7 +32,8 @@ const createUser = async (req, res, next) => {
     await allDetails.save();
     res.send({ message: "user created" });
   } catch (error) {
-    res.status(500).send(error.message);
+    // res.status(500).send(error.message);
+    next(error);
   }
 };
 
@@ -43,12 +45,19 @@ const loginAdmin = async (req, res, next) => {
   if (ExistUser == null) {
     return res.send({ message: "no user exist!" });
   }
-
-  if (ExistUser.password != password) {
+  const validPassword = bcryptjs.compareSync(password, ExistUser.password);
+  if (!validPassword) {
     return res.send({ message: "password doesn't matched" });
   }
+  let token = jwt.sign({ id: ExistUser._id }, process.env.JWT_SECRET);
 
-  return res.send({ ExistUser });
+  const { password: hashPass, ...rest } = ExistUser._doc;
+
+  const expiryDate = new Date(Date.now() + 3600000);
+  
+  res
+    .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
+    .send(rest);
 };
 
 const showSpecificUser = async (req, res, next) => {
