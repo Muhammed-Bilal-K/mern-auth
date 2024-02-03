@@ -21,11 +21,10 @@ function Login() {
             const dataInfo = result?.data?.message
             console.log(result);
             setErrorShow(dataInfo)
-            if (result.data.ExistUser.email == 'bilal@gmail.com' && result.data.ExistUser.password == '123') {
+            if (result.data.email == 'bilal@gmail.com') {
                 navigate('/admin');
             } else if (result.data.message == null) {
                 navigate('/');
-                // console.log('sasada');
             }
         })
     }

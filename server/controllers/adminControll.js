@@ -51,13 +51,13 @@ const loginAdmin = async (req, res, next) => {
   }
   let token = jwt.sign({ id: ExistUser._id }, process.env.JWT_SECRET);
 
-  const { password: hashPass, ...rest } = ExistUser._doc;
+  // const { password: hashPass, ...rest } = ExistUser._doc;
 
   const expiryDate = new Date(Date.now() + 3600000);
-  
+
   res
     .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
-    .send(rest);
+    .send(ExistUser);
 };
 
 const showSpecificUser = async (req, res, next) => {
