@@ -26,7 +26,7 @@ const updateUser = async (req, res, next) => {
     if (req.body.password) {
       req.body.password = bcryptjs.hashSync(req.body.password, 10);
     }
-    let ExistUser = await user.updateOne(
+    await user.updateOne(
       { _id: req.params.id },
       {
         $set: {
@@ -40,13 +40,16 @@ const updateUser = async (req, res, next) => {
         new: true,
       }
     );
-    res.send({ message: "update check!", ExistUser });
+
+    const ExistUser = await user.findOne({ _id: req.params.id })
+    console.log(ExistUser, 'ffdfdfd');
+    res.send({ ExistUser });
   } catch (error) {
     next(error);
   }
-  const { ...rest } = req.body;
-  let Existuser = await user.updateOne({ _id: req.params.id }, req.body);
-  console.log(Existuser);
+  // const { ...rest } = req.body;
+  // let Existuser = await user.updateOne({ _id: req.params.id }, req.body);
+  // console.log(Existuser);
 };
 
 module.exports = {

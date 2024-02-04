@@ -15,9 +15,13 @@ function Profile() {
   const fileRef = useRef(null);
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const value = useSelector((state) => {
     return state.user;
   });
+
+  console.log(value.currentUser);
 
   useEffect(() => {
     if (image) {
@@ -56,6 +60,7 @@ function Profile() {
   };
 
   const HandleDataSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     console.log(value.currentUser._id);
     axios
@@ -63,10 +68,12 @@ function Profile() {
         ...formData,
       },{withCredentials : true})
       .then((result) => {
-        console.log(result);
-        dispatch(updateUserSuccess(result.data));
-        // navigate('/');
-        location.reload()
+        console.log(result.data.ExistUser);
+        dispatch(updateUserSuccess(result.data.ExistUser));
+        // setTimeout(()=>{
+          setUpdateSuccess(true)
+          setLoading(false)
+        // },1000)
       });
   };
 
@@ -85,7 +92,7 @@ function Profile() {
             accept="image/*"
           />
           <img
-            src={formData.profilePicture || value?.currentUser?.profilePicture}
+            src={formData.profilePicture || value.currentUser.profilePicture}
             onClick={() => {
               fileRef.current.click();
             }}
@@ -97,18 +104,19 @@ function Profile() {
             <div>
               <label htmlFor="username">Name</label>
               <input
+              defaultValue={value.currentUser.username || ""}
+              type="text"
                 id="username"
                 className="inputSeprate"
-                type="text"
                 placeholder="Name"
-                defaultValue={value?.currentUser?.username || ""}
                 onChange={handleInputChange}
               />
+
             </div>
             <div>
               <label htmlFor="email">Email</label>
               <input
-                defaultValue={value?.currentUser?.email || ""}
+                defaultValue={value.currentUser.email || ""}
                 className="inputSeprate"
                 type="email"
                 placeholder="Email"
@@ -127,8 +135,15 @@ function Profile() {
               />
             </div>
             <div style={{ textAlign: "center" }}>
-              <button className="btnset">UPDATE</button>
+              <button className="btnset">{loading ? "Loading..." : "UPDATE"}</button>
             </div>
+<div style={{textAlign:"center"}}>
+{
+              updateSuccess ? (
+                <p style={{color:"green",fontSize:"16px",fontWeight:"800"}}>Updated</p>
+              ) : null
+            }
+</div>
           </form>
         </div>
         <div className="Actions">

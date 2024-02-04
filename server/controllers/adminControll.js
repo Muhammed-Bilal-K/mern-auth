@@ -64,7 +64,8 @@ const loginAdmin = async (req, res, next) => {
     secure: true,
     sameSite: "strict",
     // credentials: "include",
-  }); 
+    expiryDate
+  });
 
   res.send(ExistUser);
 };
