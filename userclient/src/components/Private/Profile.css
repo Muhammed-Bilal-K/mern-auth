@@ -5,10 +5,23 @@
   margin: 0;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
 
-.container{
-    display: flex;
-    flex-direction: column
+.container .inputSeprate {
+  padding-left: 12px;
+}
+
+.container .btnset {
+  padding: 15px 50px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: #5660d9;
 }
 
 .container .avatar {
@@ -30,6 +43,21 @@
   margin-block-start: 0.75rem;
   margin-block-end: 2rem;
   color: #fff;
+}
+
+.container .Actions {
+  padding: 10px;
+  justify-content: space-between;
+  display: flex;
+  width: 85%;
+  gap: 5px;
+}
+
+.container .Actions span{
+  padding: 12px 25px;
+  background: #9b2929;
+  color: white;
+  border-radius: 26px;
 }
 
 .container .username h3 {
@@ -54,6 +82,10 @@
 .container .button:hover {
   color: #1d1e22;
   background-color: #fff;
+}
+
+.container label {
+  margin-bottom: -18px;
 }
 
 .page {
