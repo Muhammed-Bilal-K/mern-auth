@@ -49,9 +49,11 @@ const loginAdmin = async (req, res, next) => {
   if (!validPassword) {
     return res.send({ message: "password doesn't matched" });
   }
-  let token = jwt.sign({ id: ExistUser._id }, process.env.JWT_SECRET);
+  let token = jwt.sign({ id: ExistUser._id }, process.env.JWT_SECRET );
 
   // const { password: hashPass, ...rest } = ExistUser._doc;
+
+  console.log(token);
 
   const expiryDate = new Date(Date.now() + 3600000);
 
@@ -60,19 +62,19 @@ const loginAdmin = async (req, res, next) => {
     .send(ExistUser);
 };
 
-const showSpecificUser = async (req, res, next) => {
-  console.log(req.params);
-  let ExistUser = await user.findOne({ _id: req.params.id });
-  res.send({ message: "specific user", ExistUser: ExistUser });
-};
+// const showSpecificUser = async (req, res, next) => {
+//   console.log(req.params);
+//   let ExistUser = await user.findOne({ _id: req.params.id });
+//   res.send({ message: "specific user", ExistUser: ExistUser });
+// };
 
-const updateUser = async (req, res, next) => {
-  console.log(req.body);
-  const { id, ...rest } = req.body;
-  let Existuser = await user.updateOne({ _id: req.body.id }, rest);
-  console.log(Existuser);
-  res.send({ message: "update check!" });
-};
+// const updateUser = async (req, res, next) => {
+//   console.log(req.body);
+//   const { id, ...rest } = req.body;
+//   let Existuser = await user.updateOne({ _id: req.body.id }, rest);
+//   console.log(Existuser);
+//   res.send({ message: "update check!" });
+// };
 
 const deleteUser = async (req, res, next) => {
   console.log(req.body);
@@ -91,8 +93,8 @@ const deleteUser = async (req, res, next) => {
 module.exports = {
   getAlldetails,
   createUser,
-  updateUser,
-  showSpecificUser,
+  // updateUser,
+  // showSpecificUser,
   deleteUser,
   loginAdmin,
 };

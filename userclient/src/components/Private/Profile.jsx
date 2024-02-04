@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Profile.css";
 import { useSelector } from "react-redux";
-import { app , storage } from "../../firebase";
-import { getDownloadURL , ref, uploadBytes } from "firebase/storage";
+import { app, storage } from "../../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function Profile() {
   const fileRef = useRef(null);
@@ -11,7 +11,7 @@ function Profile() {
   const value = useSelector((state) => {
     return state.user;
   });
-  
+
   console.log(formData);
   useEffect(() => {
     if (image) {
@@ -32,7 +32,7 @@ function Profile() {
           //     const downloadURL = await getDownloadURL(imgRef);
           //     console.log(downloadURL);
           //   } catch (error) {
-                  
+
           //   }
           // }
 
@@ -66,7 +66,7 @@ function Profile() {
             accept="image/*"
           />
           <img
-            src={value?.currentUser?.profilePicture}
+            src={formData.profilePicture || value?.currentUser?.profilePicture}
             onClick={() => {
               fileRef.current.click();
             }}
