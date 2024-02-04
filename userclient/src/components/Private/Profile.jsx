@@ -1,10 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Profile.css";
 import { useSelector } from "react-redux";
-import { app, storage } from "../../firebase";
+import { storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { updateUserSuccess } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
+
 
 function Profile() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const fileRef = useRef(null);
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState({});
@@ -12,7 +19,6 @@ function Profile() {
     return state.user;
   });
 
-  console.log(formData);
   useEffect(() => {
     if (image) {
       const handleUpload = async () => {
@@ -20,10 +26,8 @@ function Profile() {
           const fileName = new Date().getTime() + image.name;
           const storageRef = ref(storage, `/userImages/${fileName}`);
 
-          const uploadTask = await uploadBytes(storageRef, image);
-          console.log(uploadTask);
+          await uploadBytes(storageRef, image);
           const imageUrl = await getDownloadURL(storageRef);
-          console.log(imageUrl);
           // const fileName = new Date().getTime() + image.name;
           // const imgRef = ref(storage, `/userImages/${fileName}`);
           // if (image) {
@@ -47,8 +51,23 @@ function Profile() {
   }, [image]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const HandleDataSubmit = async (e) => {
+    e.preventDefault();
+    console.log(value.currentUser._id);
+    axios
+      .put(`http://localhost:3000/update/${value.currentUser._id}`, {
+        ...formData,
+      },{withCredentials : true})
+      .then((result) => {
+        console.log(result);
+        dispatch(updateUserSuccess(result.data));
+        // navigate('/');
+        location.reload()
+      });
   };
 
   return (
@@ -74,41 +93,43 @@ function Profile() {
           />
         </div>
         <div>
-          <div>
-            <label htmlFor="username">Name</label>
-            <input
-              className="inputSeprate"
-              type="text"
-              placeholder="Name"
-              name="username"
-              value={value?.currentUser?.username || ""}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              className="inputSeprate"
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={value?.currentUser?.email || ""}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              className="inputSeprate"
-              type="password"
-              placeholder="Password"
-              name="password"
-              onChange={handleInputChange}
-            />
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <button className="btnset">UPDATE</button>
-          </div>
+          <form onSubmit={HandleDataSubmit}>
+            <div>
+              <label htmlFor="username">Name</label>
+              <input
+                id="username"
+                className="inputSeprate"
+                type="text"
+                placeholder="Name"
+                defaultValue={value?.currentUser?.username || ""}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="email">Email</label>
+              <input
+                defaultValue={value?.currentUser?.email || ""}
+                className="inputSeprate"
+                type="email"
+                placeholder="Email"
+                id="email"
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="password">Password</label>
+              <input
+                className="inputSeprate"
+                type="password"
+                placeholder="Password"
+                id="password"
+                onChange={handleInputChange}
+              />
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <button className="btnset">UPDATE</button>
+            </div>
+          </form>
         </div>
         <div className="Actions">
           <span>Delete Account</span>

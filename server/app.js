@@ -16,7 +16,13 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: "GET, POST, OPTIONS, PATCH, PUT",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

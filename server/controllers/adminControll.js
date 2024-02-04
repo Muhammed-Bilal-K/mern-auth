@@ -49,7 +49,7 @@ const loginAdmin = async (req, res, next) => {
   if (!validPassword) {
     return res.send({ message: "password doesn't matched" });
   }
-  let token = jwt.sign({ id: ExistUser._id }, process.env.JWT_SECRET );
+  let token = jwt.sign({ id: ExistUser._id }, process.env.JWT_SECRET);
 
   // const { password: hashPass, ...rest } = ExistUser._doc;
 
@@ -57,10 +57,48 @@ const loginAdmin = async (req, res, next) => {
 
   const expiryDate = new Date(Date.now() + 3600000);
 
-  res
-    .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
-    .send(ExistUser);
+  console.log(expiryDate);
+
+  res.cookie("access_token", token || "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    // credentials: "include",
+  }); 
+
+  res.send(ExistUser);
 };
+
+// const loginAdmin = async (req, res, next) => {
+//   try {
+//     console.log(req.body);
+//     const { email, password } = req.body;
+//     let existUser = await user.findOne({ email: email });
+
+//     if (!existUser) {
+//       return res.status(404).send({ message: "No user exists!" });
+//     }
+
+//     const validPassword = bcryptjs.compareSync(password, existUser.password);
+//     if (!validPassword) {
+//       return res.status(401).send({ message: "Password doesn't match" });
+//     }
+
+//     const token = jwt.sign({ id: existUser._id }, process.env.JWT_SECRET);
+//     const expiryDate = new Date(Date.now() + 3600000);
+
+//     // Set the cookie with the token
+//     res.cookie("access_token", token, { httpOnly: true, expires: expiryDate });
+
+//     console.log(token);
+
+//     // Send user data without the password in response
+//     // const { password: _, ...userData } = existUser._doc;
+//     res.status(200).json({ existUser });
+//   } catch (error) {
+//     next(error); // Pass the error to the error handling middleware
+//   }
+// };
 
 // const showSpecificUser = async (req, res, next) => {
 //   console.log(req.params);

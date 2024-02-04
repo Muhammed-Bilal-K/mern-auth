@@ -17,6 +17,8 @@ const showSpecificUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   console.log(req.body);
+  console.log('\\\\\\\\\\');
+  console.log(req.params);
   if (req.user.id !== req.params.id) {
     return res.send({ message: "only update from your account!" });
   }
@@ -38,13 +40,13 @@ const updateUser = async (req, res, next) => {
         new: true,
       }
     );
-    res.send({ message: "update check!" , ExistUser});
+    res.send({ message: "update check!", ExistUser });
   } catch (error) {
     next(error);
   }
-  //   const {  ...rest } = req.body;
-  //   let Existuser = await user.updateOne({ _id: req.params.id }, req.body);
-  //   console.log(Existuser);
+  const { ...rest } = req.body;
+  let Existuser = await user.updateOne({ _id: req.params.id }, req.body);
+  console.log(Existuser);
 };
 
 module.exports = {

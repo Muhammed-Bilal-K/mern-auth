@@ -19,7 +19,10 @@ function Login() {
     };
 
     axios
-      .post("http://localhost:3000/admin/a_login", { ...userDetail })
+      .post(
+        "http://localhost:3000/admin/a_login",
+        { ...userDetail },{withCredentials : true}
+      )
       .then((result) => {
         const dataInfo = result?.data?.message;
         console.log(result);
@@ -65,7 +68,7 @@ function Login() {
                 placeholder=""
               />
               <label htmlFor="password">Password</label>
-              <input 
+              <input
                 required
                 className="form-styling"
                 type="password"
