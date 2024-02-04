@@ -1,0 +1,103 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap"); */
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+
+.container{
+    display: flex;
+    flex-direction: column
+}
+
+.container .avatar {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  width: 250px;
+}
+
+.container .avatar img {
+  width: 175px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.container .username {
+  grid-column: span 2;
+  margin-block-start: 0.75rem;
+  margin-block-end: 2rem;
+  color: #fff;
+}
+
+.container .username h3 {
+  text-align: center;
+}
+
+.container .button {
+  width: 120px;
+  background-color: transparent;
+  color: #fff;
+  border: 1.5px solid #fff;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: color 0.3s, background-color 0.8s;
+}
+
+.container .button:hover {
+  color: #1d1e22;
+  background-color: #fff;
+}
+
+.page {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  transform: scale(0);
+  transition: transform 0.3s;
+  background-color: #eff2f5;
+  color: #1d1e22;
+}
+
+.page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 5vw;
+  background-color: #fff;
+  font-weight: bold;
+  box-shadow: 0px 5px 5px 0px #e5e5e5;
+}
+
+.page__title {
+  font-size: 1.5rem;
+}
+
+.page__close {
+  display: flex;
+  cursor: pointer;
+}
+
+.page__body {
+  padding: 2rem 5vw;
+  overflow-y: auto;
+}
+
+.page--active {
+  transform: scale(1);
+}
+
+h4 {
+  margin-block: 10px;
+}
+
+p {
+  margin-block: 15px;
+}

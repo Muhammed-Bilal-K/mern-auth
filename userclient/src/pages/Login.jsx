@@ -6,15 +6,13 @@ import { signInSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 
 function Login() {
-  const dispatch = useDispatch()  
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorShow, setErrorShow] = useState("");
   const HandleSubmit = (e) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
     const userDetail = {
       email: email,
       password: password,
@@ -26,7 +24,7 @@ function Login() {
         const dataInfo = result?.data?.message;
         console.log(result);
         setErrorShow(dataInfo);
-        dispatch(signInSuccess(result.data))
+        dispatch(signInSuccess(result.data));
         if (result.data.email == "bilal@gmail.com") {
           navigate("/admin");
         } else if (result.data.message == null) {
@@ -67,7 +65,7 @@ function Login() {
                 placeholder=""
               />
               <label htmlFor="password">Password</label>
-              <input
+              <input 
                 required
                 className="form-styling"
                 type="password"
