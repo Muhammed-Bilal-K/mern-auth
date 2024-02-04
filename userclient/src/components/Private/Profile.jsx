@@ -5,7 +5,7 @@ import { storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { updateUserSuccess } from "../../redux/user/userSlice";
+import { updateUserSuccess , signOut} from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 
@@ -20,8 +20,6 @@ function Profile() {
   const value = useSelector((state) => {
     return state.user;
   });
-
-  console.log(value.currentUser);
 
   useEffect(() => {
     if (image) {
@@ -76,6 +74,12 @@ function Profile() {
         // },1000)
       });
   };
+
+  const handleSignout = async () => {
+    axios.get('http://localhost:3000/sigout').then((result)=>{
+      dispatch(signOut())
+    })
+  }
 
   return (
     <>
@@ -147,8 +151,8 @@ function Profile() {
           </form>
         </div>
         <div className="Actions">
-          <span>Delete Account</span>
-          <span>Sign Out</span>
+          
+          <span onClick={handleSignout}>Sign Out</span>
         </div>
       </div>
     </>

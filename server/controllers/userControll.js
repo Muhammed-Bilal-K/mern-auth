@@ -52,9 +52,14 @@ const updateUser = async (req, res, next) => {
   // console.log(Existuser);
 };
 
+const signOut = async (req, res) => {
+  res.clearCookie('access_token').status(200).json('Signout success!');
+}
+
 module.exports = {
   loginUser,
   home,
   showSpecificUser,
   updateUser,
+  signOut,
 };
