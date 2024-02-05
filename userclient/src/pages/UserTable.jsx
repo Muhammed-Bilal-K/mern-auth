@@ -47,10 +47,6 @@ function UserTable() {
             <div className="content">
                 <section className="main-header grid">
                     <h1>Users</h1>
-                    <button className="button">
-                        <i className="fa-solid fa-plus"></i>
-                        <span>Add new user</span>
-                    </button>
                 </section>
 
                 <div className="card">
@@ -60,8 +56,6 @@ function UserTable() {
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Status</th>
-                                <th>Active</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -74,18 +68,7 @@ function UserTable() {
                                         <td>{index + 1}</td>
                                         <td>{value.username}</td>
                                         <td>{value.email}</td>
-                                        <td>{value.status}</td>
-                                        <td>{value.isActive ? <button className='DeleteItem'>
-                                            Block
-                                        </button> : <button className='DeleteItem'>
-                                            Unblock
-                                        </button>}
-                                        </td>
-                                        <td>{
-                                            <button className='UpdateItem'>
-                                                Update
-                                            </button>
-                                        }</td>
+                                        
                                         <td>
                                             <button onClick={() => {
                                                 HandleDeleteConfirm(value._id)
