@@ -26,6 +26,20 @@ function UserTable() {
         })
     }
 
+    const HandleBlock = (id) => {
+        axios.put(`http://localhost:3000/admin/block/${id}`).then((result) => {
+            if (result.data.result) {
+                Swal.fire({
+                    title: "Blocked!",
+                    text: "A User has been Blocked.",
+                    icon: "success"
+                }).then(() => {
+                    location.reload();
+                })
+            }
+        })
+    }
+
     const HandleDeleteConfirm = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -38,6 +52,22 @@ function UserTable() {
         }).then((result) => {
             if (result.isConfirmed) {
                 HandleDelete(id);
+            }
+        });
+    }
+
+    const HandleBlockConfirm = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                HandleBlock(id);
             }
         });
     }
@@ -69,6 +99,13 @@ function UserTable() {
                                         <td>{value.username}</td>
                                         <td>{value.email}</td>
                                         
+                                        <td>
+                                            <button onClick={() => {
+                                                HandleBlockConfirm(value._id)
+                                            }} className='DeleteItem'>
+                                                {value.isActive? 'Block' : 'Unblock'}
+                                            </button>
+                                        </td>
                                         <td>
                                             <button onClick={() => {
                                                 HandleDeleteConfirm(value._id)

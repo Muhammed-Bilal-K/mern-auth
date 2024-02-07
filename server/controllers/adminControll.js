@@ -3,7 +3,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const getAlldetails = async (req, res, next) => {
-  const allUser = await user.find({});
+  const allUser = await user.find({username:{$ne:"bilal"}});
   console.log(allUser);
   res.send({ message: "hello", allUser: allUser });
 };
@@ -37,7 +37,7 @@ const createUser = async (req, res, next) => {
   }
 };
 
-const loginAdmin = async (req, res, next) => {
+const login = async (req, res, next) => {
   console.log(req.body);
   const { email, password } = req.body;
   let ExistUser = await user.findOne({ email: email });
@@ -49,6 +49,11 @@ const loginAdmin = async (req, res, next) => {
   if (!validPassword) {
     return res.send({ message: "password doesn't matched" });
   }
+
+  if (ExistUser.isActive === false) {
+    return res.send({ message: "account has suspended!" });
+  }
+
   let token = jwt.sign({ id: ExistUser._id }, process.env.JWT_SECRET);
 
   // const { password: hashPass, ...rest } = ExistUser._doc;
@@ -129,11 +134,34 @@ const deleteUser = async (req, res, next) => {
   res.send({ message: "user deleted!", resultInfo: resultInfo });
 };
 
+const blockUser = async (req, res, next) => {
+  try {
+    let CaseActive = await user.findById({ _id: req.params.id })
+    console.log(CaseActive.isActive, 'fff');
+    await user.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          isActive: !CaseActive.isActive,
+        },
+      },
+      {
+        new: true,
+      }
+    ).then((result)=>{
+      res.send({ message: "user deleted!", result });
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   getAlldetails,
   createUser,
   // updateUser,
   // showSpecificUser,
   deleteUser,
-  loginAdmin,
+  login,
+  blockUser,
 };

@@ -13,7 +13,9 @@ const verifyToken = (req, res, next) => {
     console.log(user, "tocken from us util");
     const userByID = await User.findById(user.id);
     console.log(userByID, "comple");
-    // if (!userByID.isActive) return next(errorHandler(403, "User is blocked!"));
+    if (!userByID.isActive){
+      res.clearCookie('access_token').status(200).json('Account has suspended!');
+    }
 
     if (err) return res.send({ message: "tocken not valid!'" });
     else console.log("jwt verified");
