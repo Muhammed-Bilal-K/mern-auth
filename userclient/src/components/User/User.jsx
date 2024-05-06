@@ -11,7 +11,7 @@ function User() {
         <p>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Hic autem
           harum eaque aut deserunt pariatur eum ea, sequi minus nam veniam atque
-          et quisquam molestiae aperiam! Iusto, ipsum.
+          et quisquam ipsum.
         </p>
       </div>
     </div>
