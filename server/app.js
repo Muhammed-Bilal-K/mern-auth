@@ -12,6 +12,7 @@ var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 
 var app = express();
+const __dirname = path.resolve();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,6 +23,13 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 204,
 };
+
+app.use(express.static(path.join(__dirname, '/userclient/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'userclient', 'dist', 'index.html'));
+});
+
 app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
