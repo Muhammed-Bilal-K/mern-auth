@@ -12,7 +12,6 @@ var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 
 var app = express();
-const __dirname = path.resolve();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
